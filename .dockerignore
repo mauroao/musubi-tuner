@@ -12,9 +12,11 @@ main.obj
 .vscode/settings.json
 references/
 
-models/*.pth
-models/*.safetensors
+models/*
+!models/download-models.sh
 
-dataset/*.png
-dataset/*.jpg
-dataset/*.txt
+dataset/*
+!dataset/.keep-it
+
+cache/*
+!cache/.keep-it
