@@ -12,3 +12,7 @@ references/
 
 models/*.pth
 models/*.safetensors
+
+dataset/*.png
+dataset/*.jpg
+dataset/*.txt
