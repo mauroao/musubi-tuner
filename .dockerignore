@@ -15,8 +15,8 @@ references/
 models/*
 !models/download-models.sh
 
-dataset/*
-!dataset/.keep-it
+# dataset/*
+# !dataset/.keep-it
 
 cache/*
 !cache/.keep-it
