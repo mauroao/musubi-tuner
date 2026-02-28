@@ -25,7 +25,6 @@ accelerate launch \
   --mixed_precision bf16 \
   --fp8_base \
   --sdpa \
-  --sage_attn \
   --blocks_to_swap 28 \
   --gradient_checkpointing \
   --img_in_txt_in_offloading \
