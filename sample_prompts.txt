@@ -1,2 +1,2 @@
 # Amostra de personagem - gerada ao final de cada epoca
-s3xyv3ner4 walking on the street wearing gym clothes --w 480 --h 832 --f 17 --d 42 --s 20 --l 5.0
+s3xyv3n3r4 walking on the street wearing gym clothes --w 480 --h 832 --f 17 --d 42 --s 20 --l 5.0
