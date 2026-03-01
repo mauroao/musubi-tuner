@@ -54,7 +54,7 @@ accelerate launch \
   --timestep_sampling shift \
   --discrete_flow_shift 3.0 \
   --num_timestep_buckets 5 \
-  --max_train_epochs 20 \
+  --max_train_epochs 30 \
   --save_every_n_epochs 1 \
   --seed 42 \
   --output_dir "$OUTPUT_DIR" \
