@@ -28,7 +28,7 @@ VAE="/workspace/models/wan_2.1_vae.safetensors"
 T5="/workspace/models/models_t5_umt5-xxl-enc-bf16.pth"
 OUTPUT_DIR="/workspace/output"
 OUTPUT_NAME="s3xyv3n3r4"
-SAMPLE_PROMPTS="/home/mauro/github-mauro/musubi-tuner/sample_prompts.txt"
+SAMPLE_PROMPTS="./sample_prompts.txt"
 
 mkdir -p "$OUTPUT_DIR"
 
