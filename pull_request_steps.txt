@@ -1,0 +1,124 @@
+================================================================================
+PULL REQUEST — Fix RGBA crash in I2V sample generation
+Target repo: kohya-ss/musubi-tuner
+================================================================================
+
+BACKGROUND
+----------
+When using WAN 2.2 (or 2.1) I2V training with a PNG reference image that has
+an alpha channel (RGBA), the training crashes at sample generation time with:
+
+  RuntimeError: Sizes of tensors must match except in dimension 1.
+  Expected size 4 but got size 3 for tensor number 1 in the list.
+
+This happens because Image.open() returns a 4-channel tensor for RGBA images,
+but the subsequent torch.zeros() hardcodes 3 channels:
+
+  image = torch.concat([image, torch.zeros(3, padding_frames, h, w)], dim=1)
+
+The training step itself completes and the checkpoint is saved normally.
+Only the sample generation call fails.
+
+The same file already handles RGBA correctly in two other places:
+  - process_sample_prompts (~line 233): uses Image.open(...).convert("RGB")
+  - do_inference / encode_image (~line 284): has an explicit RGBA branch
+
+The I2V path simply lacks the conversion.
+
+--------------------------------------------------------------------------------
+FILE TO CHANGE
+--------------------------------------------------------------------------------
+src/musubi_tuner/wan_train_network.py
+
+--------------------------------------------------------------------------------
+THE FIX (one line)
+--------------------------------------------------------------------------------
+Find this block inside do_inference, in the `if self.i2v_training:` branch:
+
+  BEFORE:
+      image = Image.open(image_path)
+      image = resize_image_to_bucket(image, (width, height))
+
+  AFTER:
+      image = Image.open(image_path).convert("RGB")
+      image = resize_image_to_bucket(image, (width, height))
+
+--------------------------------------------------------------------------------
+PULL REQUEST TITLE
+--------------------------------------------------------------------------------
+fix: convert reference image to RGB in I2V sample generation to handle RGBA PNGs
+
+--------------------------------------------------------------------------------
+PULL REQUEST BODY (paste as-is)
+--------------------------------------------------------------------------------
+
+## Summary
+
+When using I2V training (`--task i2v-A14B`) with a reference image that has an
+alpha channel (e.g. a PNG exported with transparency), the training crashes
+during sample generation at the end of each epoch with:
+
+```
+RuntimeError: Sizes of tensors must match except in dimension 1.
+Expected size 4 but got size 3 for tensor number 1 in the list.
+```
+
+The crash happens in `do_inference` inside the `if self.i2v_training:` branch,
+at the line:
+
+```python
+image = torch.concat([image, torch.zeros(3, padding_frames, height, width)], dim=1)
+```
+
+`image` has shape `[4, 1, H, W]` (RGBA) while `torch.zeros` uses 3 channels.
+
+The training step itself finishes correctly and the checkpoint is saved —
+only the sample generation call fails, aborting the entire run.
+
+## Fix
+
+Add `.convert("RGB")` to the `Image.open` call in the I2V branch of
+`do_inference`, consistent with how the same file already handles RGBA in:
+- `process_sample_prompts` (line ~233): `Image.open(...).convert("RGB")`
+- `encode_image` nested function (line ~284): explicit `if image.mode == "RGBA"` branch
+
+```python
+# Before
+image = Image.open(image_path)
+
+# After
+image = Image.open(image_path).convert("RGB")
+```
+
+## How to reproduce
+
+1. Use any RGBA PNG (e.g. exported from Stable Diffusion or image editors) as
+   the `--i` reference image in `sample_prompts.txt`
+2. Run I2V training with `--sample_every_n_epochs 1`
+3. Crash occurs at the first sample generation step
+
+## Testing
+
+Tested on WAN 2.2 I2V 14B (`i2v-A14B`) with a 768×1024 RGBA PNG reference
+image. With the fix applied, sample generation completes successfully.
+
+--------------------------------------------------------------------------------
+STEPS TO OPEN THE PR
+--------------------------------------------------------------------------------
+1. Make sure your fork (mauroao/musubi-tuner) is up to date with upstream main
+2. Create a new branch:
+     git checkout -b fix/i2v-sample-rgba-conversion
+
+3. Apply the one-line change in src/musubi_tuner/wan_train_network.py
+
+4. Commit:
+     git add src/musubi_tuner/wan_train_network.py
+     git commit -m "fix: convert reference image to RGB in I2V sample generation to handle RGBA PNGs"
+
+5. Push:
+     git push origin fix/i2v-sample-rgba-conversion
+
+6. Open a PR on GitHub from mauroao/musubi-tuner → kohya-ss/musubi-tuner
+   Use the title and body text above.
+
+================================================================================

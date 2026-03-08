@@ -318,7 +318,7 @@ class WanNetworkTrainer(NetworkTrainer):
             vae.eval()
 
             if self.i2v_training:
-                image = Image.open(image_path)
+                image = Image.open(image_path).convert("RGB")
                 image = resize_image_to_bucket(image, (width, height))  # returns a numpy array
                 image = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(1).float()  # C, 1, H, W
                 image = image / 127.5 - 1  # -1 to 1
