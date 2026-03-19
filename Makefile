@@ -1,4 +1,4 @@
-TAG = mauroao/training-musubi:0.1.3
+TAG = mauroao/training-musubi:0.1.4
 
 docker-build:
 	docker build -t $(TAG) .
