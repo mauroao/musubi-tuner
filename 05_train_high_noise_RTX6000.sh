@@ -22,12 +22,12 @@ DIT="/workspace/models/wan2.2_i2v_high_noise_14B_fp16.safetensors"
 VAE="/workspace/models/wan_2.1_vae.safetensors"
 T5="/workspace/models/models_t5_umt5-xxl-enc-bf16.pth"
 OUTPUT_DIR="/workspace/output/high_noise"
-OUTPUT_NAME="s3xyv3n3r4_high"
+OUTPUT_NAME="p03tritr4v15_high"
 SAMPLE_PROMPTS="./sample_prompts_i2v.txt"
 
 mkdir -p "$OUTPUT_DIR"
 
-echo "=== Starting LoRA training: WAN 2.2 I2V High-Noise 14B - RTX 6000 Ada - s3xyv3n3r4 ==="
+echo "=== Starting LoRA training: WAN 2.2 I2V High-Noise 14B - RTX 6000 Ada - p03tritr4v15_high ==="
 
 accelerate launch \
   --num_cpu_threads_per_process 1 \

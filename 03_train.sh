@@ -8,12 +8,12 @@ DIT="/workspace/models/wan2.1_t2v_14B_fp8_e4m3fn.safetensors"
 VAE="/workspace/models/wan_2.1_vae.safetensors"
 T5="/workspace/models/models_t5_umt5-xxl-enc-bf16.pth"
 OUTPUT_DIR="/workspace/output"
-OUTPUT_NAME="s3xyv3n3r4"
+OUTPUT_NAME="p03tritr4v15"
 SAMPLE_PROMPTS="./sample_prompts.txt"
 
 mkdir -p "$OUTPUT_DIR"
 
-echo "=== Starting LoRA training: WAN 2.1 T2V 14B - s3xyv3n3r4 ==="
+echo "=== Starting LoRA training: WAN 2.1 T2V 14B - p03tritr4v15 ==="
 
 accelerate launch \
   --num_cpu_threads_per_process 1 \

@@ -19,12 +19,12 @@ DIT="/workspace/models/wan2.2_i2v_low_noise_14B_fp16.safetensors"
 VAE="/workspace/models/wan_2.1_vae.safetensors"
 T5="/workspace/models/models_t5_umt5-xxl-enc-bf16.pth"
 OUTPUT_DIR="/workspace/output/low_noise"
-OUTPUT_NAME="s3xyv3n3r4_low"
+OUTPUT_NAME="p03tritr4v15_low"
 SAMPLE_PROMPTS="./sample_prompts_i2v.txt"
 
 mkdir -p "$OUTPUT_DIR"
 
-echo "=== Starting LoRA training: WAN 2.2 I2V Low-Noise 14B - RTX 4060 Ti - s3xyv3n3r4 ==="
+echo "=== Starting LoRA training: WAN 2.2 I2V Low-Noise 14B - RTX 4060 Ti - p03tritr4v15_low ==="
 
 accelerate launch \
   --num_cpu_threads_per_process 1 \
