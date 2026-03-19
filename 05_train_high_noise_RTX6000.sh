@@ -61,7 +61,9 @@ accelerate launch \
   --sample_prompts "$SAMPLE_PROMPTS" \
   --sample_every_n_epochs 1 \
   --max_data_loader_n_workers 2 \
-  --persistent_data_loader_workers
+  --persistent_data_loader_workers \
+  --save_state \
+  --save_last_n_epochs_state 2
 # OOM fallback: add --blocks_to_swap 10 above if out-of-memory errors occur
 
 echo "=== Training complete. Checkpoints in: $OUTPUT_DIR ==="
